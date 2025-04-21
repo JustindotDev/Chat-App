@@ -1,4 +1,4 @@
- # 🌟 Chat App 🌟
+ # Chat App 
 
 A real-time chat application that enables **direct messaging** between users. It supports **user authentication**, **message history**, **typing indicators**, and **text and image messages**.
 
