@@ -10,7 +10,7 @@ import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import SettingsIcon from "@mui/icons-material/Settings";
 import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutline";
-import AccountCircle from "@mui/icons-material/AccountCircle";
+import Avatar from "@mui/material/Avatar";
 import { useAuthStore } from "../store/useAuthStore";
 import { useNavigate } from "react-router-dom";
 import CircularProgress from "@mui/material/CircularProgress";
@@ -23,7 +23,7 @@ function Navbar() {
   const navigate = useNavigate();
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
-  const { logOut, isLoggingOut } = useAuthStore();
+  const { logOut, isLoggingOut, authUser } = useAuthStore();
 
   const { mode, toggleTheme } = useThemeContext();
 
@@ -168,7 +168,11 @@ function Navbar() {
                 navigate("/profile");
               }}
             >
-              <AccountCircle sx={{ mr: "5spx" }} />
+              <Avatar
+                sx={{ mr: "5px", width: 28, height: 28 }}
+                src={authUser.profilePic || "/profile.jpg"}
+              />
+
               <Typography
                 variant="subtitle1"
                 noWrap

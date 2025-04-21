@@ -57,12 +57,11 @@ const HomePage = () => {
           >
             {users.map((user) =>
               isUsersLoading ? (
-                <ContactSkeleton />
+                <ContactSkeleton key={user._id} />
               ) : (
                 // TODO: put to another file and make user a props.
-                <ListItem disablePadding sx={{ mb: "1rem" }}>
+                <ListItem disablePadding sx={{ mb: "1rem" }} key={user._id}>
                   <ListItemButton
-                    key={user._id}
                     onClick={() => setSelectedUser(user)}
                     sx={
                       selectedUser?._id === user._id

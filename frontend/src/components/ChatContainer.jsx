@@ -11,6 +11,8 @@ import { useAuthStore } from "../store/useAuthStore.js";
 import CloseIcon from "@mui/icons-material/Close";
 import toast from "react-hot-toast";
 import MessageSkeleton from "./MessageSkeleton.jsx";
+import { formatMessageTime } from "../lib/time-format.js";
+import React, { Fragment } from "react";
 
 const ChatContainer = () => {
   const {
@@ -73,13 +75,7 @@ const ChatContainer = () => {
   };
 
   return (
-    <Box
-      width={"100%"}
-      height={"100%"}
-      display={"flex"}
-      flexDirection={"column"}
-      position={"relative"}
-    >
+    <Box width="100%" height="90vh" display="flex" flexDirection="column">
       {/* Header */}
       <AppBar position="static">
         <Toolbar variant="dense" sx={{ gap: 1.5 }}>
@@ -93,48 +89,63 @@ const ChatContainer = () => {
         </Toolbar>
       </AppBar>
 
-      {/* Conversation  */}
+      {/* Scrollable Messages */}
       <Box
         sx={{
+          flex: 1,
+          overflowY: "auto",
           display: "flex",
           flexDirection: "column",
-          overflowY: "auto",
-          height: "100%",
-          mb: 8,
-          mt: 2,
+          px: 2,
           "&::-webkit-scrollbar": {
             display: "none",
           },
         }}
       >
+        {/* Spacer pushes messages down when there are few */}
+        <Box sx={{ flexGrow: 1 }} />
+
         {isMessagesLoading
           ? [...Array(5)].map((_, idx) => (
-              <>
-                <MessageSkeleton key={`${idx}-left`} side="left" />
-                <MessageSkeleton key={`${idx}-right`} side="right" />
-              </>
+              <Fragment key={idx}>
+                <MessageSkeleton side="left" />
+                <MessageSkeleton side="right" />
+              </Fragment>
             ))
           : messages.map((message) => (
               <Box
                 key={message._id}
-                mb={1}
-                px={2}
-                display={"flex"}
+                mb={4}
+                display="flex"
                 justifyContent={
                   message.senderId === authUser._id ? "flex-end" : "flex-start"
                 }
-                alignItems={"flex-end"}
+                alignItems="flex-end"
+                position="relative"
               >
+                <Typography
+                  variant="caption"
+                  color="textSecondary"
+                  sx={{
+                    position: "absolute",
+                    top: -15,
+                    left: 55,
+                    right: 55,
+                    textAlign:
+                      message.senderId === authUser._id ? "right" : "left", // Align the time based on message sender
+                  }}
+                >
+                  {formatMessageTime(message.createdAt)}
+                </Typography>
                 <Box
                   sx={{
                     maxWidth: "60%",
                     p: 1,
                     borderRadius: 2,
                     display: "flex",
-
                     flexDirection:
                       message.senderId === authUser._id ? "row-reverse" : "row",
-                    alignItems: "center",
+                    alignItems: "flex-end",
                     gap: 1,
                   }}
                 >
@@ -146,64 +157,65 @@ const ChatContainer = () => {
                     }
                     sx={{ width: 32, height: 32 }}
                   />
-
-                  {message.textMessage && (
-                    <Typography
-                      sx={{
-                        bgcolor:
-                          message.senderId === authUser._id
-                            ? "primary.main"
-                            : "grey.300",
-                        color:
-                          message.senderId === authUser._id ? "white" : "black",
-                        p: 1.5,
-                        borderTopLeftRadius: "15px",
-                        borderTopRightRadius: "15px",
-                        borderBottomRightRadius:
-                          message.senderId === authUser._id ? "none" : "15px",
-                        borderBottomLeftRadius:
-                          message.senderId === authUser._id ? "15px" : "none",
-                      }}
-                    >
-                      {message.textMessage}
-                    </Typography>
-                  )}
-
-                  {message.image && (
-                    <Box display={"flex"}>
-                      <img
-                        src={message.image}
-                        alt="Image"
-                        style={{
-                          height: "9rem",
-                          width: "9rem",
-                          borderRadius: "10px",
+                  <Box
+                    sx={{
+                      bgcolor:
+                        message.senderId === authUser._id
+                          ? "primary.main"
+                          : "grey.300",
+                      color:
+                        message.senderId === authUser._id ? "white" : "black",
+                      p: 1.5,
+                      borderTopLeftRadius: "15px",
+                      borderTopRightRadius: "15px",
+                      borderBottomRightRadius:
+                        message.senderId === authUser._id ? "none" : "15px",
+                      borderBottomLeftRadius:
+                        message.senderId === authUser._id ? "15px" : "none",
+                    }}
+                  >
+                    {message.image && (
+                      <Box display="flex">
+                        <img
+                          src={message.image}
+                          alt="Image"
+                          style={{
+                            height: "9rem",
+                            width: "9rem",
+                            borderRadius: "10px",
+                          }}
+                        />
+                      </Box>
+                    )}
+                    {message.textMessage && (
+                      <Typography
+                        sx={{
+                          wordBreak: "break-word",
+                          whiteSpace: "pre-wrap",
                         }}
-                      />
-                    </Box>
-                  )}
+                      >
+                        {message.textMessage}
+                      </Typography>
+                    )}
+                  </Box>
                 </Box>
               </Box>
             ))}
         <div ref={scrollRef}></div>
       </Box>
 
-      {/* Mesage Input  */}
+      {/* Input Section */}
       <Box
-        display={"flex"}
-        alignItems={"center"}
-        justifyContent={"center"}
-        gap={1}
+        display="flex"
+        flexDirection={"column"}
+        alignItems="flex-start"
         sx={{
-          position: "absolute",
-          bottom: 0,
-          width: "100%",
           p: 1.5,
-          boxShadow: 2,
         }}
+        justifyContent={"center"}
       >
         {imagePreview && (
-          <Box position={"absolute"} top={-70} left={75}>
+          <Box position="relative">
             <CardMedia
               component="img"
               image={imagePreview}
@@ -212,6 +224,8 @@ const ChatContainer = () => {
                 borderRadius: "10px",
                 height: "5rem",
                 width: "5rem",
+                ml: 6,
+                mb: 1,
               }}
             />
             <IconButton
@@ -230,65 +244,66 @@ const ChatContainer = () => {
             </IconButton>
           </Box>
         )}
-        <IconButton
-          disableRipple
-          sx={{ minWidth: 0, padding: 0 }}
-          onClick={() => fileInput.current?.click()}
-        >
-          <InsertPhotoIcon
-            sx={{
-              fontSize: "2rem",
-              color: "primary.main",
+        <Box display={"flex"} gap={1}>
+          <IconButton
+            disableRipple
+            sx={{ minWidth: 0, padding: 0 }}
+            onClick={() => fileInput.current?.click()}
+          >
+            <InsertPhotoIcon
+              sx={{
+                fontSize: "2rem",
+                color: "primary.main",
+              }}
+            />
+            <input
+              type="file"
+              accept="image/*"
+              hidden
+              ref={fileInput}
+              onChange={handleImageChange}
+            />
+          </IconButton>
+          <textarea
+            style={{
+              resize: "none",
+              width: "29.5rem",
+              height: "2.3rem",
+              borderRadius: "5px",
+              backgroundColor: "transparent",
+              color: "white",
+              fontSize: "16px",
+              paddingTop: "7px",
+              fontFamily: "roboto",
+              overflow: "hidden",
+              paddingLeft: ".7rem",
             }}
-          />
-          <input
-            type="file"
-            accept="image/*"
-            hidden
-            ref={fileInput}
-            onChange={handleImageChange}
-          />
-        </IconButton>
-        <textarea
-          style={{
-            resize: "none",
-            width: "28rem",
-            height: "2.3rem",
-            borderRadius: "5px",
-            backgroundColor: "transparent",
-            color: "white",
-            fontSize: "16px",
-            textAlign: "left",
-            paddingTop: "7px",
-            fontFamily: "roboto",
-            overflow: "hidden",
-            paddingLeft: ".7rem",
-          }}
-          placeholder="Type a Message..."
-          value={text}
-          onChange={(e) => setText(e.target.value)}
-        ></textarea>
+            placeholder="Type a Message..."
+            value={text}
+            onChange={(e) => setText(e.target.value)}
+          ></textarea>
 
-        <Button
-          sx={{
-            width: "2.5rem",
-            height: "2.2rem",
-            minWidth: 0,
-            padding: 0,
-            bgcolor: "transparent",
-          }}
-          onClick={handleSendMessage}
-          disabled={!text.trim() && !imagePreview}
-        >
-          <SendIcon
+          <Button
             sx={{
-              fontSize: "1.7rem",
-              transform: "rotate(310deg)",
-              ml: "0.5rem",
-              mb: "0.5rem",
+              width: "2.5rem",
+              height: "2.2rem",
+              minWidth: 0,
+              padding: 0,
+              bgcolor: "transparent",
             }}
-          />
-        </Button>
+            onClick={handleSendMessage}
+            disabled={!text.trim() && !imagePreview}
+          >
+            <SendIcon
+              sx={{
+                fontSize: "1.7rem",
+                transform: "rotate(310deg)",
+                ml: "0.5rem",
+                mb: "0.5rem",
+              }}
+            />
+          </Button>
+        </Box>
       </Box>
     </Box>
   );
