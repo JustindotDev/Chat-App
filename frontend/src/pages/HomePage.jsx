@@ -13,12 +13,14 @@ import GroupIcon from "@mui/icons-material/Group";
 import ContactSkeleton from "../components/ContactSkeleton";
 import NoChatSelectedContainer from "../components/NoChatSelectedContainer";
 import ChatContainer from "../components/ChatContainer";
+import { useAuthStore } from "../store/useAuthStore";
+import Badge from "@mui/material/Badge";
 
 const HomePage = () => {
   const { getUsers, users, selectedUser, setSelectedUser, isUsersLoading } =
     useChatStore();
 
-  const onlineUsers = [];
+  const { onlineUser } = useAuthStore();
 
   useEffect(() => {
     getUsers();
@@ -70,9 +72,50 @@ const HomePage = () => {
                     }
                   >
                     <ListItemIcon>
-                      <Avatar src={user.profilePic} />
+                      <Badge
+                        overlap="circular"
+                        variant="dot"
+                        badgeContent=" "
+                        anchorOrigin={{
+                          vertical: "bottom",
+                          horizontal: "right",
+                        }}
+                        sx={{
+                          "& .MuiBadge-badge": {
+                            backgroundColor: onlineUser.includes(user._id)
+                              ? "green"
+                              : "gray",
+                            width: 14, // custom width
+                            height: 14, // custom height
+                            borderRadius: "50%", // make sure it's still circular
+                            border: "2px solid #16161a", // optional border to separate it from Avatar
+                          },
+                        }}
+                      >
+                        <Avatar src={user.profilePic} />
+                      </Badge>
                     </ListItemIcon>
-                    <ListItemText primary={user.fullName} />
+                    <ListItemText
+                      primary={
+                        <Box display="flex" flexDirection="column">
+                          <Typography variant="body1">
+                            {user.fullName}
+                          </Typography>
+                          <Typography
+                            variant="caption"
+                            color={
+                              onlineUser.includes(user._id)
+                                ? "success.main"
+                                : "text.secondary"
+                            }
+                          >
+                            {onlineUser.includes(user._id)
+                              ? "online"
+                              : "offline"}
+                          </Typography>
+                        </Box>
+                      }
+                    />
                   </ListItemButton>
                 </ListItem>
               )

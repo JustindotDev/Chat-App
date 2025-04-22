@@ -5,10 +5,9 @@ import { connectDB } from "./config/db.js";
 import authRoutes from "./routes/auth-routes.js";
 import cookieParser from "cookie-parser";
 import chatRoutes from "./routes/chats-routes.js";
+import { app, server, io } from "./lib/socket.js";
 
 dotenv.config();
-
-const app = express();
 
 const PORT = process.env.PORT || 5000;
 
@@ -25,7 +24,7 @@ app.use(
 app.use("/api/auth", authRoutes);
 app.use("/api/messages", chatRoutes);
 
-app.listen(PORT, () => {
+server.listen(PORT, () => {
   connectDB();
   console.log("Server started at http://localhost:" + PORT);
 });

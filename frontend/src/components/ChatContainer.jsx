@@ -22,7 +22,7 @@ const ChatContainer = () => {
     selectedUser,
     sendMessage,
   } = useChatStore();
-  const { authUser } = useAuthStore();
+  const { authUser, onlineUser } = useAuthStore();
   const [text, setText] = useState("");
   const [imagePreview, setImagePreview] = useState(null);
   const fileInput = useRef(null);
@@ -83,9 +83,26 @@ const ChatContainer = () => {
             src={selectedUser.profilePic}
             sx={{ width: 32, height: 32 }}
           />
-          <Typography variant="h6" color="inherit">
-            {selectedUser.fullName}
-          </Typography>
+          <Box display={"flex"} flexDirection={"column"}>
+            <Typography
+              variant="h6"
+              color="inherit"
+              sx={{ marginBottom: 0, paddingBottom: 0, lineHeight: 1.5 }}
+            >
+              {selectedUser.fullName}
+            </Typography>
+            <Typography
+              variant="caption"
+              color={
+                onlineUser.includes(selectedUser._id)
+                  ? "success.main"
+                  : "text.secondary"
+              }
+              sx={{ marginBottom: 0, paddingBottom: 0, lineHeight: 1 }}
+            >
+              {onlineUser.includes(selectedUser._id) ? "Online" : "Offline"}
+            </Typography>
+          </Box>
         </Toolbar>
       </AppBar>
 
