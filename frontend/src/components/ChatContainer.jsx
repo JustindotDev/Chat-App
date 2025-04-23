@@ -21,6 +21,8 @@ const ChatContainer = () => {
     isMessagesLoading,
     selectedUser,
     sendMessage,
+    subscribeToMessages,
+    unsubscribeFromMessages,
   } = useChatStore();
   const { authUser, onlineUser } = useAuthStore();
   const [text, setText] = useState("");
@@ -31,7 +33,16 @@ const ChatContainer = () => {
 
   useEffect(() => {
     getMessages(selectedUser._id);
-  }, [selectedUser._id, getMessages]);
+
+    subscribeToMessages();
+
+    return () => unsubscribeFromMessages();
+  }, [
+    selectedUser._id,
+    getMessages,
+    subscribeToMessages,
+    unsubscribeFromMessages,
+  ]);
 
   useEffect(() => {
     scrollRef.current?.scrollIntoView({ behavior: "smooth" });
