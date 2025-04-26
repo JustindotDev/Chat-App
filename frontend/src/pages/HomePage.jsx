@@ -34,6 +34,7 @@ const HomePage = () => {
           width: "60%",
         }}
       >
+        {/* Contacts Side Bar */}
         <Box
           display={"flex"}
           flexDirection={"column"}
@@ -85,10 +86,10 @@ const HomePage = () => {
                             backgroundColor: onlineUser.includes(user._id)
                               ? "green"
                               : "gray",
-                            width: 14, // custom width
-                            height: 14, // custom height
-                            borderRadius: "50%", // make sure it's still circular
-                            border: "2px solid #16161a", // optional border to separate it from Avatar
+                            width: 14,
+                            height: 14,
+                            borderRadius: "50%",
+                            border: "2px solid #16161a",
                           },
                         }}
                       >

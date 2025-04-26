@@ -14,7 +14,16 @@ export const useChatStore = create((set, get) => ({
     set({ isUsersLoading: true });
     try {
       const res = await axiosInstance.get("/messages/users");
-      set({ users: res.data });
+      const users = res.data;
+
+      // Sort users by latestMessage timestamp (desc)
+      users.sort((a, b) => {
+        const aTime = new Date(a.latestMessage?.createdAt || 0);
+        const bTime = new Date(b.latestMessage?.createdAt || 0);
+        return bTime - aTime;
+      });
+
+      set({ users });
     } catch (error) {
       toast.error(error.response.data.message);
     } finally {
@@ -66,6 +75,27 @@ export const useChatStore = create((set, get) => ({
   unsubscribeFromMessages: () => {
     const socket = useAuthStore.getState().socket;
     socket.off("newChat");
+  },
+
+  subscribeToSidebar: () => {
+    const socket = useAuthStore.getState().socket;
+
+    if (!socket) {
+      console.warn("Socket not available yet");
+      return;
+    }
+
+    // Clear any previous listener first to avoid duplicates
+    socket.off("sidebarUpdate");
+
+    socket.on("sidebarUpdate", () => {
+      get().getUsers(); // Re-fetch users when sidebar needs update
+    });
+  },
+
+  unsubscribeFromSidebar: () => {
+    const socket = useAuthStore.getState().socket;
+    socket.off("sidebarUpdate");
   },
 
   setSelectedUser: (selectedUser) => set({ selectedUser }),

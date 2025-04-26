@@ -9,13 +9,21 @@ import { useEffect } from "react";
 import CircularProgress from "@mui/material/CircularProgress";
 import Box from "@mui/material/Box";
 import { Toaster } from "react-hot-toast";
+import { useChatStore } from "./store/useChatStore.js";
 
 const App = () => {
-  const { authUser, checkAuth, isCheckingAuth } = useAuthStore();
+  const { authUser, checkAuth, isCheckingAuth, socket } = useAuthStore();
+  const { subscribeToSidebar } = useChatStore.getState();
 
   useEffect(() => {
     checkAuth();
   }, [checkAuth]);
+
+  useEffect(() => {
+    if (authUser && socket) {
+      subscribeToSidebar();
+    }
+  }, [authUser, socket]);
 
   if (isCheckingAuth && !authUser) {
     return (
