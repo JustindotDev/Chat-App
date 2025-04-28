@@ -35,7 +35,3 @@ A real-time chat application that enables **direct messaging** between users. It
 - **Socket.io** – Real-time, bidirectional communication
 - **JWT (JSON Web Tokens)** – For secure authentication
 - **Cookie-parser** – For handling cookies in the backend
-
-### TODO:
-
-- Add a search bar in the side bar for the users search.
