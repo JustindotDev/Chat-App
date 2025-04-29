@@ -1,14 +1,19 @@
 import { Navigate, Route, Routes } from "react-router-dom";
+
+import { useEffect } from "react";
+
+import { Toaster } from "react-hot-toast";
+
+import Box from "@mui/material/Box";
+import CircularProgress from "@mui/material/CircularProgress";
+
 import Navbar from "./components/Navbar.jsx";
 import SignupPage from "./pages/SignupPage.jsx";
 import LoginPage from "./pages/LoginPage.jsx";
 import ProfilePage from "./pages/ProfilePage.jsx";
 import HomePage from "./pages/HomePage.jsx";
+
 import { useAuthStore } from "./store/useAuthStore.js";
-import { useEffect } from "react";
-import CircularProgress from "@mui/material/CircularProgress";
-import Box from "@mui/material/Box";
-import { Toaster } from "react-hot-toast";
 import { useChatStore } from "./store/useChatStore.js";
 
 const App = () => {

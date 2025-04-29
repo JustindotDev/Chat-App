@@ -1,18 +1,25 @@
-import { Box, Button, Typography, CardMedia } from "@mui/material";
+import React, { Fragment, useEffect, useRef, useState } from "react";
+import toast from "react-hot-toast";
+
+import {
+  Box,
+  Button,
+  Typography,
+  CardMedia,
+  IconButton,
+  AppBar,
+  Toolbar,
+  Avatar,
+} from "@mui/material";
+
 import SendIcon from "@mui/icons-material/Send";
 import InsertPhotoIcon from "@mui/icons-material/InsertPhoto";
-import IconButton from "@mui/material/IconButton";
-import { useChatStore } from "../store/useChatStore";
-import { useEffect, useRef, useState } from "react";
-import AppBar from "@mui/material/AppBar";
-import Toolbar from "@mui/material/Toolbar";
-import Avatar from "@mui/material/Avatar";
-import { useAuthStore } from "../store/useAuthStore.js";
 import CloseIcon from "@mui/icons-material/Close";
-import toast from "react-hot-toast";
-import MessageSkeleton from "./MessageSkeleton.jsx";
-import { formatMessageTime } from "../lib/time-format.js";
-import React, { Fragment } from "react";
+
+import { useChatStore } from "../store/useChatStore";
+import { useAuthStore } from "../store/useAuthStore";
+import MessageSkeleton from "./MessageSkeleton";
+import { formatMessageTime } from "../lib/time-format";
 
 const ChatContainer = () => {
   const {

@@ -8,11 +8,14 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
+
 import ChatBubbleIcon from "@mui/icons-material/ChatBubble";
-import { useNavigate } from "react-router-dom";
+
 import { useState } from "react";
-import { useAuthStore } from "../store/useAuthStore";
+import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
+
+import { useAuthStore } from "../store/useAuthStore";
 
 const LoginPage = () => {
   const navigate = useNavigate();

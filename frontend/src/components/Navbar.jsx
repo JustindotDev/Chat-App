@@ -1,22 +1,29 @@
 import * as React from "react";
-import AppBar from "@mui/material/AppBar";
-import Box from "@mui/material/Box";
-import Toolbar from "@mui/material/Toolbar";
-import IconButton from "@mui/material/IconButton";
-import Typography from "@mui/material/Typography";
-import Menu from "@mui/material/Menu";
-import Container from "@mui/material/Container";
-import Tooltip from "@mui/material/Tooltip";
-import MenuItem from "@mui/material/MenuItem";
+
+import { useNavigate } from "react-router-dom";
+
+import {
+  AppBar,
+  Avatar,
+  Box,
+  CircularProgress,
+  Container,
+  FormControlLabel,
+  IconButton,
+  Menu,
+  MenuItem,
+  Switch,
+  Toolbar,
+  Tooltip,
+  Typography,
+} from "@mui/material";
+
+import { styled } from "@mui/material/styles";
+
 import SettingsIcon from "@mui/icons-material/Settings";
 import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutline";
-import Avatar from "@mui/material/Avatar";
+
 import { useAuthStore } from "../store/useAuthStore";
-import { useNavigate } from "react-router-dom";
-import CircularProgress from "@mui/material/CircularProgress";
-import { styled } from "@mui/material/styles";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Switch from "@mui/material/Switch";
 import { useThemeContext } from "./ThemeContext.jsx";
 
 function Navbar() {

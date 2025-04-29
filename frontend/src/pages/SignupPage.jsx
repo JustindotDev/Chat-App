@@ -9,17 +9,20 @@ import {
   IconButton,
   InputAdornment,
   InputLabel,
+  OutlinedInput,
   TextField,
   Typography,
 } from "@mui/material";
+
 import ChatBubbleIcon from "@mui/icons-material/ChatBubble";
-import { useNavigate } from "react-router-dom";
-import { useState } from "react";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
-import OutlinedInput from "@mui/material/OutlinedInput";
-import { useAuthStore } from "../store/useAuthStore.js";
+
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
+
+import { useAuthStore } from "../store/useAuthStore";
 
 const SignupPage = () => {
   const navigate = useNavigate();

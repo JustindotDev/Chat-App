@@ -1,6 +1,8 @@
-import { createContext, useMemo, useState, useContext, useEffect } from "react";
-import { ThemeProvider, createTheme } from "@mui/material/styles";
+import { createContext, useContext, useEffect, useMemo, useState } from "react";
+
+import { ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
+
 import lightThemeOptions from "./theme/LightTheme.js";
 import darkThemeOptions from "./theme/DarkTheme.js";
 

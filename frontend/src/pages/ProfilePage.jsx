@@ -1,18 +1,21 @@
-import Box from "@mui/material/Box";
 import {
+  Box,
   Button,
   Card,
   CardHeader,
   CardMedia,
   Paper,
   Typography,
+  Divider,
 } from "@mui/material";
+
 import AddAPhotoIcon from "@mui/icons-material/AddAPhoto";
-import { useAuthStore } from "../store/useAuthStore.js";
 import PermIdentityIcon from "@mui/icons-material/PermIdentity";
 import MailOutlineIcon from "@mui/icons-material/MailOutline";
-import Divider from "@mui/material/Divider";
+
 import { useState } from "react";
+
+import { useAuthStore } from "../store/useAuthStore";
 
 const ProfilePage = () => {
   const { authUser, isUpdatingProfile, updateProfile } = useAuthStore();
